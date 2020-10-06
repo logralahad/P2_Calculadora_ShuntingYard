@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -27,8 +28,9 @@ public class Main {
         StringBuilder str = new StringBuilder();
         
         while(!res.isEmpty()){
-            char letra = (char)res.pop();
-            str.append(letra);
+            double parte = res.pop();
+            String insertar = Double.toString(parte);
+            str.append(insertar);
         }
         str.append("\n");
         String posfijo = str.toString();
@@ -59,9 +61,27 @@ public class Main {
         return Math.pow(num1, num2);
     }
     
+    public static String separar(String ecuacion){
+        StringBuilder sep = new StringBuilder();
+        StringBuilder fin = new StringBuilder();
+        for(int i = 0 ; i < ecuacion.length(); i++){
+            char opc = ecuacion.charAt(i);
+            if(opc <= '9' && opc >= '0'){
+                sep.append(opc);
+            }else{
+                fin.append(sep);
+                fin.append(" ");
+                fin.append(opc);
+                fin.append(" ");
+                sep = new StringBuilder();
+            }
+        }
+        fin.append(sep);
+        String res_fin = fin.toString();
+        return res_fin;
+    }
+    
     public static String resolverSY(Cola resultado){
-        //String nuevo = convertir(resultado);
-        //System.out.println(nuevo);
         Pila numeros = new Pila();
         while(!resultado.isEmpty()){
             char opc = (char)resultado.pop();
@@ -72,7 +92,7 @@ public class Main {
                 numeros.push(res);
                 
             }else{
-                double numero_real = (int)opc - 48;
+                double numero_real = opc;
                 numeros.push(numero_real);
             }
         }
@@ -86,13 +106,18 @@ public class Main {
         Cola resultado = new Cola();
         Pila operador = new Pila();
         Pila negativo = new Pila();
+        
+        ecuacion = separar(ecuacion);
+        StringTokenizer toks = new StringTokenizer(ecuacion," ");
 
-        for(int i = 0; i < ecuacion.length(); i++){
-            double ascii = (double)ecuacion.charAt(i);
+        while(toks.hasMoreTokens()){
+            String parte = toks.nextToken();
+            double ascii = (double)parte.charAt(0);
 
             if(ascii == SPACE) continue;
             else if( ascii <= 57 && ascii >= 48 ) {
-                resultado.push(ascii);
+                double num = Double.valueOf(parte);
+                resultado.push(num);
                 if(!negativo.isEmpty()){
                     resultado.push(negativo.pop());
                 }
@@ -100,7 +125,7 @@ public class Main {
             }
             else{
                 if(resultado.isEmpty()){
-                    resultado.push(48);
+                    resultado.push(0);
                     negativo.push(ascii);
                 }
                 else if(operador.isEmpty() || ascii == 40){
