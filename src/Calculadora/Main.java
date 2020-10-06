@@ -22,21 +22,7 @@ public class Main {
      * @param args the command line arguments
      */
     
-    public static final Integer SPACE = 32;
-    
-    public static String convertir(Cola res){
-        StringBuilder str = new StringBuilder();
-        
-        while(!res.isEmpty()){
-            double parte = res.pop();
-            String insertar = Double.toString(parte);
-            str.append(insertar);
-        }
-        str.append("\n");
-        String posfijo = str.toString();
-        return posfijo;
-    }
-    
+    public static final Integer SPACE = 32;   
     
     public static boolean operador(char simbolo){
         if(simbolo == '+' || simbolo == '-'|| simbolo == '*' || simbolo == '/' || simbolo == '^'){
